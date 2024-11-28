@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Loader,Card,FormField } from '../Components';
 
+//The RenderCards component is a functional component that receives data and title as props. It is used to render a list of cards or display a message if no data is available.
 const RenderCards=({data,title})=>{
+  // If data has one or more items (data?.length > 0), it maps through the data array and renders a Card component for each post, passing the post data as props to the Card component.
     if(data?.length >0){
         return data.map((post)=><Card key={post._id}{...post} />)
     }
-
+    // If data is empty or undefined, it returns an <h2> element displaying the title.
     return (
         <h2 className='mt-5 font-bold text-[#6449ff] text-xl uppercase'>{title}</h2>
     )
@@ -26,24 +28,34 @@ const Home = () => {
         <FormField/>
     </div>
     <div className='mt-10'>
+    {/* The syntax {loading ? ( ... ) : ( ... )} is known as the ternary operator. It is a shorthand way to perform conditional rendering in React (or JavaScript in general).
+    Condition: loading
+    True Expression: What to render if the condition is true
+    False Expression: What to render if the condition is false */}
         {loading ? (
             <div className='flex justify-center items-center'>
                 <Loader />
                 </div>
         ) : (
             <>
+            {/* Condition: searchText
+            This checks if searchText is not an empty string (i.e., the user has entered some text in the search field).
+            True Expression: If searchText is not empty, the following JSX is rendered:
+            A <h2> element displaying the message "Showing results for" followed by the search text entered by the user, which is highlighted using a <span> with a different color. */}
              {searchText && (
                 <h2 className='font-medium text-[#666e75] text-xl mb-3'>
                     Showing results for <span className='text-[#222328]'>{searchText}</span>
                 </h2>
              )}
              <div className='grid lg:grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-3'>
+             {/* If searchText is not empty, it renders the RenderCards component with the data prop as an empty array ([]) and the title prop as "No search results found". */}
               {searchText ? (
                 <RenderCards
                 data={[]} 
                 title="No search results found"
                 />
               ):(
+              // If searchText is empty, it renders the RenderCards component with the data prop as an empty array ([]) and the title prop as "No posts found".
              <RenderCards
               data={[]}
               title="No posts found"
